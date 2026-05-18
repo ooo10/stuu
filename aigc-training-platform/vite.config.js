@@ -9,7 +9,7 @@ export default defineConfig({
       '@': resolve(__dirname, 'src')
     }
   },
-  base: '/aigc-training-platform/',
+  base: '/stuu/',
   server: {
     proxy: {
       '/api': {
