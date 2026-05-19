@@ -31,7 +31,7 @@
       
       <nav class="sidebar-nav">
         <div class="nav-section">
-          <div class="nav-item active" @click="activeMenu = 'dashboard'">
+          <div class="nav-item" :class="{ active: activeMenu === 'dashboard' }" @click="activeMenu = 'dashboard'">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="3" width="7" height="7" rx="1"/>
               <rect x="14" y="3" width="7" height="7" rx="1"/>
@@ -42,15 +42,16 @@
             <div class="nav-indicator"></div>
           </div>
           
-          <div class="nav-item" @click="activeMenu = 'tasks'">
+          <div class="nav-item" :class="{ active: activeMenu === 'tasks' }" @click="activeMenu = 'tasks'">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M9 11l3 3L22 4"/>
               <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
             </svg>
             <span class="nav-label">实训任务</span>
+            <div class="nav-indicator"></div>
           </div>
           
-          <div class="nav-item" @click="activeMenu = 'students'">
+          <div class="nav-item" :class="{ active: activeMenu === 'students' }" @click="activeMenu = 'students'">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
               <circle cx="9" cy="7" r="4"/>
@@ -58,26 +59,29 @@
               <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
             </svg>
             <span class="nav-label">学生管理</span>
+            <div class="nav-indicator"></div>
           </div>
         </div>
         
         <div class="nav-section-divider"></div>
         
         <div class="nav-section">
-          <div class="nav-item" @click="activeMenu = 'resources'">
+          <div class="nav-item" :class="{ active: activeMenu === 'resources' }" @click="activeMenu = 'resources'">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
               <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
             </svg>
             <span class="nav-label">教学资源</span>
+            <div class="nav-indicator"></div>
           </div>
           
-          <div class="nav-item" @click="activeMenu = 'settings'">
+          <div class="nav-item" :class="{ active: activeMenu === 'settings' }" @click="activeMenu = 'settings'">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="3"/>
               <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06 2 3.46a1 1 0 0 1-.24 1.22l-.12.14c-.37.38-.93.38-1.31.02l-2.12-1.24a1.8 1.8 0 0 0-2.22.23l-.09-.07a1.72 1.72 0 0 0-1.88 0l-.09.07a1.8 1.8 0 0 0-2.22-.23l-2.12 1.24a1 1 0 0 1-1.31-.02l-.12-.14a1 1 0 0 1-.24-1.22l.06-.06a1.65 1.65 0 0 0 .33-1.82l-.03-.06a1.7 1.7 0 0 0 0-1.94l-.06-.07-2-3.46a1 1 0 0 1 .24-1.22l.12-.14c.37-.38.93-.38 1.31-.02l2.12 1.24a1.8 1.8 0 0 0 2.22-.23l.09.07a1.72 1.72 0 0 0 1.88 0l.09-.07a1.8 1.8 0 0 0 2.22.23l2.12-1.24a1 1 0 0 1 1.31.02l.12.14a1 1 0 0 1 .24 1.22l-.06.06a1.65 1.65 0 0 0-.33 1.82l.03.06a1.7 1.7 0 0 0 0 1.94z"/>
             </svg>
             <span class="nav-label">系统设置</span>
+            <div class="nav-indicator"></div>
           </div>
         </div>
       </nav>
@@ -103,7 +107,7 @@
             </div>
           </div>
           <div class="user-info">
-            <span class="user-name">李老师</span>
+            <span class="user-name">{{ currentUser }}</span>
             <span class="user-role">高级讲师</span>
           </div>
           <button class="menu-dots">
@@ -147,7 +151,7 @@
               </svg>
             </div>
             <div class="greeting-text">
-              <h1 class="page-title">下午好，李老师 🌤️</h1>
+              <h1 class="page-title">下午好，{{ currentUser }} 🌤️</h1>
               <p class="page-desc">今天有 32 份作业等待您的批改，让我们开始吧！</p>
             </div>
           </div>
@@ -191,7 +195,8 @@
         </div>
       </header>
 
-      <div class="stats-grid">
+      <template v-if="activeMenu === 'dashboard'">
+        <div class="stats-grid">
         <div class="stat-card primary" @click="onStatClick('total')">
           <div class="stat-decoration"></div>
           <div class="stat-content">
@@ -566,6 +571,240 @@
           </div>
         </div>
       </div>
+      </template>
+
+      <template v-else-if="activeMenu === 'tasks'">
+        <div class="page-container">
+          <div class="page-header">
+            <h2 class="page-title">实训任务</h2>
+            <p class="page-desc">管理和发布实训任务</p>
+          </div>
+          <div class="task-list-container">
+            <div class="task-table">
+              <div class="table-header">
+                <div class="table-cell">任务名称</div>
+                <div class="table-cell">所属模块</div>
+                <div class="table-cell">参与学生</div>
+                <div class="table-cell">截止日期</div>
+                <div class="table-cell">状态</div>
+                <div class="table-cell">操作</div>
+              </div>
+              <div class="table-body">
+                <div class="table-row" v-for="task in pendingTasks" :key="task.id">
+                  <div class="table-cell">
+                    <div class="task-name-display">
+                      <div class="task-icon" :style="{background: getModuleColor(task.module)}">
+                        <svg v-if="task.module === '生文本'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        <svg v-else-if="task.module === '生图片'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                          <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        </svg>
+                        <svg v-else-if="task.module === '生视频'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                          <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                        <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        </svg>
+                      </div>
+                      <span class="task-name">{{ task.name }}</span>
+                    </div>
+                  </div>
+                  <div class="table-cell">
+                    <span class="module-tag" :class="'module-' + getModuleTagType(task.module)">{{ task.module }}</span>
+                  </div>
+                  <div class="table-cell">{{ task.students }} 人</div>
+                  <div class="table-cell">{{ task.deadline }}</div>
+                  <div class="table-cell">
+                    <span class="status-badge" :class="'status-' + task.status">{{ task.status === 'pending' ? '待批改' : '已完成' }}</span>
+                  </div>
+                  <div class="table-cell">
+                    <button class="action-btn view-btn" @click="viewTask(task)">查看</button>
+                    <button class="action-btn grade-btn" @click="gradeTask(task)">批改</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button class="add-task-btn" @click="showAddTaskModal = true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>发布新任务</span>
+            </button>
+          </div>
+        </div>
+      </template>
+
+      <template v-else-if="activeMenu === 'students'">
+        <div class="page-container">
+          <div class="page-header">
+            <h2 class="page-title">学生管理</h2>
+            <p class="page-desc">管理班级学生信息</p>
+          </div>
+          <div class="students-container">
+            <div class="students-grid">
+              <div class="student-card" v-for="i in 6" :key="i">
+                <div class="student-avatar">
+                  <svg viewBox="0 0 48 48" fill="none">
+                    <defs>
+                      <linearGradient :id="'grad-' + i" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" :stop-color="['#6366f1', '#ec4899', '#10b981', '#f59e0b', '#8b5cf6', '#3b82f6'][i-1]"/>
+                        <stop offset="100%" :stop-color="['#8b5cf6', '#f472b6', '#34d399', '#fbbf24', '#a78bfa', '#60a5fa'][i-1]"/>
+                      </linearGradient>
+                    </defs>
+                    <circle cx="24" cy="24" r="22" :fill="'url(#grad-' + i + ')'"/>
+                    <circle cx="24" cy="18" r="7" fill="white" opacity="0.9"/>
+                    <ellipse cx="24" cy="32" rx="10" ry="6" fill="white" opacity="0.9"/>
+                  </svg>
+                </div>
+                <div class="student-info">
+                  <span class="student-name">学生{{ i }}</span>
+                  <span class="student-class">实训班{{ Math.ceil(i/2) }}组</span>
+                </div>
+                <div class="student-score">
+                  <span class="score-label">综合评分</span>
+                  <span class="score-value">{{ 75 + i * 4 }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <template v-else-if="activeMenu === 'resources'">
+        <div class="page-container">
+          <div class="page-header">
+            <h2 class="page-title">教学资源</h2>
+            <p class="page-desc">管理教学资料和素材</p>
+          </div>
+          <div class="resources-container">
+            <div class="resources-grid">
+              <div class="resource-card" v-for="i in 4" :key="i">
+                <div class="resource-icon" :style="{background: ['linear-gradient(135deg, #6366f1, #8b5cf6)', 'linear-gradient(135deg, #ec4899, #f472b6)', 'linear-gradient(135deg, #10b981, #34d399)', 'linear-gradient(135deg, #f59e0b, #fbbf24)'][i-1]}">
+                  <svg v-if="i === 1" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                  </svg>
+                  <svg v-else-if="i === 2" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  </svg>
+                  <svg v-else-if="i === 3" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                  </svg>
+                  <svg v-else viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                  </svg>
+                </div>
+                <div class="resource-info">
+                  <span class="resource-name">{{ ['文本创作指南', '图像生成教程', '视频剪辑技巧', '音频合成手册'][i-1] }}</span>
+                  <span class="resource-desc">{{ ['详细的文本创作技巧和方法', '图像生成的基础知识', '视频剪辑的实用技巧', '音频合成的入门指南'][i-1] }}</span>
+                </div>
+                <button class="resource-action" @click="viewResource(i-1)">查看</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <template v-else-if="activeMenu === 'settings'">
+        <div class="page-container">
+          <div class="page-header">
+            <h2 class="page-title">系统设置</h2>
+            <p class="page-desc">配置平台参数和个人设置</p>
+          </div>
+          <div class="settings-container">
+            <div class="settings-section">
+              <h3 class="section-title">个人信息</h3>
+              <div class="settings-form">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" class="form-input" :value="currentUser" readonly>
+                  </div>
+                  <div class="form-group">
+                    <label>角色</label>
+                    <input type="text" class="form-input" value="教师" readonly>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="settings-section">
+              <h3 class="section-title">平台设置</h3>
+              <div class="settings-form">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>主题模式</label>
+                    <select class="form-select">
+                      <option>亮色模式</option>
+                      <option>暗色模式</option>
+                      <option>跟随系统</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>语言</label>
+                    <select class="form-select">
+                      <option>简体中文</option>
+                      <option>English</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <div class="modal-overlay" v-if="showResourceModal" @click="showResourceModal = false">
+        <div class="modal-content resource-modal" @click.stop>
+          <div class="modal-header">
+            <div class="modal-title-section">
+              <div class="modal-icon" v-if="selectedResource" :style="{background: selectedResource.color}">
+                <svg v-if="selectedResource.icon === 'text'" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                <svg v-else-if="selectedResource.icon === 'image'" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                </svg>
+                <svg v-else-if="selectedResource.icon === 'video'" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                  <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                  <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                </svg>
+                <svg v-else viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                </svg>
+              </div>
+              <div class="modal-title-text">
+                <h2>{{ selectedResource?.name }}</h2>
+                <p>{{ selectedResource?.description }}</p>
+              </div>
+            </div>
+            <button class="modal-close" @click="showResourceModal = false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+          
+          <div class="modal-body">
+            <div class="resource-content" v-if="selectedResource">
+              <div class="resource-content-inner" v-html="renderMarkdown(selectedResource.content)"></div>
+            </div>
+          </div>
+          
+          <div class="modal-footer">
+            <button class="modal-btn cancel-btn" @click="showResourceModal = false">关闭</button>
+          </div>
+        </div>
+      </div>
 
       <div class="modal-overlay" v-if="showAddTaskModal" @click="showAddTaskModal = false">
         <div class="modal-content" @click.stop>
@@ -667,6 +906,7 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const activeMenu = ref('dashboard')
 const showAddTaskModal = ref(false)
+const currentUser = ref(localStorage.getItem('currentUsername') || '李老师')
 
 const newTask = reactive({
   name: '',
@@ -704,8 +944,192 @@ const getModuleColor = (module) => {
   return colors[module] || 'linear-gradient(135deg, #6366f1, #8b5cf6)'
 }
 
+const resources = [
+  {
+    id: 1,
+    name: '文本创作指南',
+    icon: 'text',
+    description: '详细的文本创作技巧和方法',
+    color: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+    content: `# 文本创作指南
+
+## 一、创作基础
+
+### 1.1 写作准备
+- 明确写作目的和受众
+- 收集相关资料和素材
+- 制定写作大纲
+
+### 1.2 结构规划
+- 引言：吸引读者注意力
+- 正文：详细阐述主题
+- 结论：总结要点
+
+## 二、写作技巧
+
+### 2.1 语言表达
+- 使用简洁明了的语言
+- 避免冗长复杂的句子
+- 保持段落短小精悍
+
+### 2.2 内容组织
+- 逻辑清晰，层次分明
+- 重点突出，详略得当
+- 过渡自然，衔接流畅
+
+## 三、实战练习
+
+尝试完成以下练习：
+1. 写一篇200字的短文介绍你的专业
+2. 撰写产品描述文案
+3. 创作一篇故事开头
+
+---
+*持续练习，不断提升写作能力！*`
+  },
+  {
+    id: 2,
+    name: '图像生成教程',
+    icon: 'image',
+    description: '图像生成的基础知识',
+    color: 'linear-gradient(135deg, #ec4899, #f472b6)',
+    content: `# 图像生成教程
+
+## 一、基础概念
+
+### 1.1 图像生成技术
+- 基于扩散模型的生成技术
+- 提示词的重要性
+- 常用参数设置
+
+### 1.2 提示词技巧
+- 主体描述要明确
+- 添加风格和氛围描述
+- 使用专业术语提升质量
+
+## 二、实战指南
+
+### 2.1 提示词结构
+\`\`\`
+主体 + 风格 + 细节 + 参数
+\`\`\`
+
+### 2.2 示例提示词
+\`\`\`
+beautiful landscape with mountains and lake, 
+cinematic lighting, photorealistic, 8k, 
+detailed, professional photography
+\`\`\`
+
+## 三、进阶技巧
+
+- 尝试不同的模型风格
+- 使用负提示词排除不想要的元素
+- 调整分辨率和比例
+
+---
+*多实践，探索无限创意可能！*`
+  },
+  {
+    id: 3,
+    name: '视频剪辑技巧',
+    icon: 'video',
+    description: '视频剪辑的实用技巧',
+    color: 'linear-gradient(135deg, #10b981, #34d399)',
+    content: `# 视频剪辑技巧
+
+## 一、剪辑基础
+
+### 1.1 软件选择
+- Premiere Pro：专业级剪辑工具
+- After Effects：特效制作
+- CapCut：移动端剪辑
+
+### 1.2 基本操作
+- 剪切与拼接
+- 转场效果
+- 音频处理
+
+## 二、节奏把控
+
+### 2.1 镜头时长
+- 根据内容调整节奏
+- 保持观众注意力
+- 避免冗长镜头
+
+### 2.2 音乐配合
+- 选择合适的背景音乐
+- 卡点剪辑增强节奏感
+- 音量平衡调节
+
+## 三、调色技巧
+
+- 统一画面风格
+- 调整对比度和饱和度
+- 添加滤镜增强氛围
+
+---
+*剪辑让故事更精彩！*`
+  },
+  {
+    id: 4,
+    name: '音频合成手册',
+    icon: 'audio',
+    description: '音频合成的入门指南',
+    color: 'linear-gradient(135deg, #f59e0b, #fbbf24)',
+    content: `# 音频合成手册
+
+## 一、语音合成基础
+
+### 1.1 TTS技术
+- 文字转语音原理
+- 不同音色选择
+- 语速和语调调节
+
+### 1.2 参数设置
+- 选择合适的声音类型
+- 调整语速适应场景
+- 添加背景音乐
+
+## 二、实践应用
+
+### 2.1 场景选择
+- 旁白配音：清晰正式
+- 角色对话：生动自然
+- 广告宣传：活力充沛
+
+### 2.2 后期处理
+- 添加背景音乐
+- 调整音量平衡
+- 降噪处理
+
+## 三、高级技巧
+
+- 多角色对话合成
+- 情感语气调整
+- 音频格式转换
+
+---
+*让声音为内容增色！*`
+  }
+]
+
+const showResourceModal = ref(false)
+const selectedResource = ref(null)
+
 const onStatClick = (type) => {
-  console.log('Stat clicked:', type)
+  switch(type) {
+    case 'total':
+    case 'completed':
+    case 'pending':
+      activeMenu.value = 'tasks'
+      break
+    case 'students':
+      activeMenu.value = 'students'
+      break
+    default:
+      break
+  }
 }
 
 const showNotification = () => {
@@ -727,6 +1151,30 @@ const gradeTask = (task) => {
 const addTask = () => {
   console.log('Add task:', newTask)
   showAddTaskModal.value = false
+}
+
+const viewResource = (index) => {
+  selectedResource.value = resources[index]
+  showResourceModal.value = true
+}
+
+const renderMarkdown = (content) => {
+  let html = content
+    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+    .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
+    .replace(/\*(.*)\*/gim, '<em>$1</em>')
+    .replace(/`([^`]+)`/gim, '<code>$1</code>')
+    .replace(/```[\s\S]*?```/gim, (match) => {
+      const code = match.replace(/```/g, '')
+      return `<pre><code>${code}</code></pre>`
+    })
+    .replace(/^- (.*$)/gim, '<li>$1</li>')
+    .replace(/^(\d+)\. (.*$)/gim, '<li>$1. $2</li>')
+    .replace(/(<li>[\s\S]*?<\/li>)/gim, '<ul>$1</ul>')
+    .replace(/\n/gim, '<br>')
+  return html
 }
 
 const handleLogout = () => {
@@ -2275,5 +2723,365 @@ const handleLogout = () => {
   .table-cell:not(.task-name-cell) {
     display: none;
   }
+}
+
+.page-container {
+  padding-top: 20px;
+}
+
+.page-header {
+  margin-bottom: 32px;
+}
+
+.page-header .page-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0;
+}
+
+.page-header .page-desc {
+  color: #64748b;
+  font-size: 14px;
+  margin: 6px 0 0 0;
+}
+
+.students-container {
+  padding: 20px 0;
+}
+
+.students-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.student-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.06);
+  border: 1px solid rgba(99, 102, 241, 0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.student-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(99, 102, 241, 0.12);
+}
+
+.student-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.student-avatar svg {
+  width: 100%;
+  height: 100%;
+}
+
+.student-info {
+  text-align: center;
+}
+
+.student-name {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.student-class {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.student-score {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(99, 102, 241, 0.06);
+  border-radius: 12px;
+}
+
+.score-label {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.score-value {
+  font-size: 18px;
+  font-weight: 800;
+  color: #6366f1;
+}
+
+.resources-container {
+  padding: 20px 0;
+}
+
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.resource-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.06);
+  border: 1px solid rgba(99, 102, 241, 0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.resource-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(99, 102, 241, 0.12);
+}
+
+.resource-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.resource-icon svg {
+  width: 30px;
+  height: 30px;
+  stroke-width: 2.2px;
+}
+
+.resource-info {
+  flex: 1;
+}
+
+.resource-name {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+.resource-desc {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.resource-action {
+  align-self: flex-start;
+  padding: 12px 24px;
+  background: rgba(99, 102, 241, 0.08);
+  border: none;
+  border-radius: 12px;
+  color: #6366f1;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.resource-action:hover {
+  background: rgba(99, 102, 241, 0.15);
+  transform: translateY(-2px);
+}
+
+.task-list-container {
+  padding: 20px 0;
+}
+
+.add-task-btn {
+  margin-top: 24px;
+  padding: 16px 32px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-task-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(99, 102, 241, 0.4);
+}
+
+.add-task-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.2px;
+}
+
+.settings-container {
+  padding: 20px 0;
+}
+
+.settings-section {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.06);
+  border: 1px solid rgba(99, 102, 241, 0.08);
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 20px 0;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.settings-form .form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.settings-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settings-form label {
+  font-weight: 600;
+  color: #475569;
+  font-size: 14px;
+}
+
+.settings-form .form-input,
+.settings-form .form-select {
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  font-size: 14px;
+  color: #1e293b;
+  background: #f8fafc;
+}
+
+.settings-form .form-input:focus,
+.settings-form .form-select:focus {
+  outline: none;
+  border-color: #6366f1;
+  background: white;
+}
+
+.resource-modal {
+  max-width: 800px;
+}
+
+.resource-content {
+  padding: 10px 0;
+}
+
+.resource-content-inner {
+  line-height: 1.8;
+  color: #334155;
+}
+
+.resource-content-inner h1 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 20px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.resource-content-inner h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 24px 0 12px 0;
+}
+
+.resource-content-inner h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #334155;
+  margin: 16px 0 8px 0;
+}
+
+.resource-content-inner p {
+  margin: 8px 0;
+}
+
+.resource-content-inner ul {
+  margin: 8px 0 8px 24px;
+  padding-left: 0;
+}
+
+.resource-content-inner li {
+  margin-bottom: 6px;
+  position: relative;
+  padding-left: 20px;
+}
+
+.resource-content-inner li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #6366f1;
+}
+
+.resource-content-inner strong {
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.resource-content-inner code {
+  background: rgba(99, 102, 241, 0.1);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 14px;
+  color: #6366f1;
+}
+
+.resource-content-inner pre {
+  background: #1e293b;
+  padding: 16px;
+  border-radius: 12px;
+  overflow-x: auto;
+  margin: 12px 0;
+}
+
+.resource-content-inner pre code {
+  background: transparent;
+  color: #e2e8f0;
+  padding: 0;
 }
 </style>

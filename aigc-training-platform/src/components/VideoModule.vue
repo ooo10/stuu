@@ -125,45 +125,25 @@ const handleGenerate = async () => {
   resultVideo.value = ''
   const startTime = Date.now()
   
-  try {
-    const response = await fetch('http://localhost:8000/api/video/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        prompt: inputText.value,
-        duration: selectedDuration.value === 'short' ? 15 : selectedDuration.value === 'medium' ? 30 : 60,
-        style: selectedStyle.value
-      })
-    })
-
-    const data = await response.json()
-    responseTime.value = Date.now() - startTime
-    
-    if (data && data.video_url) {
-      resultVideo.value = `http://localhost:8000${data.video_url}`
-    } else {
-      resultVideo.value = generateMockVideo()
-    }
-    
-    const history = JSON.parse(localStorage.getItem('creationHistory') || '[]')
-    history.unshift({
-      id: Date.now(),
-      type: 'video',
-      title: inputText.value.substring(0, 30) + (inputText.value.length > 30 ? '...' : ''),
-      content: resultVideo.value,
-      time: getTimeAgo(),
-      createdAt: new Date().toISOString()
-    })
-    localStorage.setItem('creationHistory', JSON.stringify(history.slice(0, 50)))
-  } catch (error) {
-    console.error('视频生成API调用失败:', error)
-    responseTime.value = Date.now() - startTime
-    resultVideo.value = generateMockVideo()
-  } finally {
-    isLoading.value = false
-  }
+  // Mock 优先模式 - 直接生成模拟视频，不依赖后端
+  await new Promise(resolve => setTimeout(resolve, Math.random() * 1500 + 800))
+  responseTime.value = Date.now() - startTime
+  resultVideo.value = generateMockVideo()
+  
+  // 保存历史记录
+  const history = JSON.parse(localStorage.getItem('creationHistory') || '[]')
+  history.unshift({
+    id: Date.now(),
+    type: 'video',
+    title: inputText.value.substring(0, 30) + (inputText.value.length > 30 ? '...' : ''),
+    imageUrl: null,
+    content: resultVideo.value,
+    time: getTimeAgo(),
+    createdAt: new Date().toISOString()
+  })
+  localStorage.setItem('creationHistory', JSON.stringify(history.slice(0, 50)))
+  
+  isLoading.value = false
 }
 
 const generateMockVideo = () => {

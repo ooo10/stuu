@@ -120,6 +120,19 @@ const currentTabConfig = computed(() => {
   return configs[activeTab.value] || configs.tts
 })
 
+const voiceMap = {
+  'male': 'male',
+  'female': 'female',
+  'child': 'tongtong',
+  'robot': 'robot'
+}
+
+const speedMap = {
+  'slow': 0.8,
+  'normal': 1.0,
+  'fast': 1.2
+}
+
 const handleGenerate = async () => {
   if (!inputText.value.trim()) return
   
@@ -127,7 +140,29 @@ const handleGenerate = async () => {
   const startTime = Date.now()
   
   try {
-    resultAudio.value = 'https://www.w3schools.com/html/horse.mp3'
+    const voice = voiceMap[selectedVoice.value] || 'female-tianmei'
+    const speed = speedMap[selectedSpeed.value] || 1.0
+    
+    const response = await fetch('http://localhost:8000/api/audio/tts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        text: inputText.value,
+        voice: voice,
+        speed: speed
+      })
+    })
+    
+    const data = await response.json()
+    
+    if (data.success && data.audio_base64) {
+      resultAudio.value = `data:audio/wav;base64,${data.audio_base64}`
+    } else {
+      resultAudio.value = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
+    }
+    
     responseTime.value = Date.now() - startTime
     
     const history = JSON.parse(localStorage.getItem('creationHistory') || '[]')
@@ -135,6 +170,7 @@ const handleGenerate = async () => {
       id: Date.now(),
       type: 'audio',
       title: inputText.value.substring(0, 30) + (inputText.value.length > 30 ? '...' : ''),
+      imageUrl: null,
       content: resultAudio.value,
       time: getTimeAgo(),
       createdAt: new Date().toISOString()

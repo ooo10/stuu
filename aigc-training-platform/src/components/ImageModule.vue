@@ -299,50 +299,28 @@ const handleGenerate = async () => {
   resultImages.value = []
   const startTime = Date.now()
   
-  try {
-    if (activeTab.value === 'text2img') {
-      const response = await fetch('http://localhost:8000/api/image/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          prompt: inputText.value,
-          style: selectedStyle.value,
-          size: selectedSize.value
-        })
-      })
-
-      const data = await response.json()
-      responseTime.value = Date.now() - startTime
-      
-      if (data && data.image_url) {
-        resultImages.value = [data.image_url]
-        
-        const history = JSON.parse(localStorage.getItem('creationHistory') || '[]')
-        history.unshift({
-          id: Date.now(),
-          type: 'image',
-          title: inputText.value.substring(0, 30) + (inputText.value.length > 30 ? '...' : ''),
-          imageUrl: data.image_url,
-          content: data.image_url,
-          time: getTimeAgo(),
-          createdAt: new Date().toISOString()
-        })
-        localStorage.setItem('creationHistory', JSON.stringify(history.slice(0, 50)))
-      } else {
-        resultImages.value = generateMockImages()
-      }
-    } else {
-      resultImages.value = generateMockImages()
-    }
-  } catch (error) {
-    console.error('图片生成API调用失败:', error)
-    responseTime.value = Date.now() - startTime
-    resultImages.value = generateMockImages()
-  } finally {
-    isLoading.value = false
-  }
+  // Mock 优先模式 - 直接生成模拟图片，不依赖后端
+  await new Promise(resolve => setTimeout(resolve, Math.random() * 1000 + 500))
+  responseTime.value = Date.now() - startTime
+  resultImages.value = generateMockImages()
+  
+  // 保存历史记录
+  const history = JSON.parse(localStorage.getItem('creationHistory') || '[]')
+  const title = activeTab.value === 'text2img' 
+    ? inputText.value.substring(0, 30) + (inputText.value.length > 30 ? '...' : '')
+    : (activeTab.value === 'img2img' ? '图生图结果' : `风格转换-${selectedStyleForTransfer.value}`)
+  history.unshift({
+    id: Date.now(),
+    type: 'image',
+    title: title,
+    imageUrl: resultImages.value[0],
+    content: resultImages.value[0],
+    time: getTimeAgo(),
+    createdAt: new Date().toISOString()
+  })
+  localStorage.setItem('creationHistory', JSON.stringify(history.slice(0, 50)))
+  
+  isLoading.value = false
 }
 
 const generateMockImages = () => {

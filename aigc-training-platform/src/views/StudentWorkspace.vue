@@ -302,7 +302,7 @@
               <span class="stat-value">{{ portfolioCount }}</span>
               <span class="stat-label">作品集</span>
             </div>
-            <div class="stat-badge">
+            <div class="stat-badge" @click="activeMenu = 'history'">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 8v4l3 3"/>
               </svg>
@@ -2336,6 +2336,40 @@ const handleLogout = () => {
   height: 48px;
   margin-bottom: 16px;
   opacity: 0.5;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(99, 102, 241, 0.06));
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: 14px;
+  color: #3b82f6;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.08);
+}
+
+.back-btn:hover {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.16), rgba(99, 102, 241, 0.12));
+  border-color: rgba(59, 130, 246, 0.3);
+  transform: translateX(-4px);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15);
+}
+
+.back-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.2px;
+  transition: transform 0.3s ease;
+}
+
+.back-btn:hover svg {
+  transform: translateX(-3px);
 }
 
 .empty-activities p {
